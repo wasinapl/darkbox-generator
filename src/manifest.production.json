@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "Darkbox generator",
+    "description": "Generator próśb o wygenerowanie linku",
+    "version": "1.1.1",
+    "background": {
+        "service_worker": "/js/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://darkbox.vip/*"
+            ],
+            "js": [
+                "/js/content.js"
+            ],
+            "css": [
+                "/css/content.css"
+            ]
+        }
+    ],
+    "host_permissions": [
+        "*://*.wrzucajpliki.pl/*",
+        "*://*.rapidgator.net/*",
+        "*://*.wplik.com/*",
+        "*://*.ddownload.com/*"
+      ]
+}

@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "darkflix generator",
+    "description": "chrome extension",
+    "version": "0.0.1",
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "/js/content.js"
+            ]
+        }
+    ]
+}

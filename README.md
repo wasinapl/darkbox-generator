@@ -1,4 +1,4 @@
-# darkflix2
+# darkbox generator próśb
 
 ## Project setup
 ```

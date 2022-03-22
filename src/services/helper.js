@@ -7,9 +7,8 @@ export default {
     for (let item of codeElements) {
       if (siteList.some((el) => item.innerHTML.includes(el))) {
         const button = document.createElement("div");
-        button.innerText = "Poproś o generacje";
+        button.innerText = "sprawdź linki i poproś o generację";
         button.classList.add("button", "button--with-icon", "spo", "generuj");
-        button.style.width = "150px";
         button.dataset.codeid = codeid;
         button.addEventListener("click", onClick);
         item.appendChild(document.createElement("br"));

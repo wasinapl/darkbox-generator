@@ -20,8 +20,8 @@
       </div>
     </div>
     <div class="nav">
-      <div class="button" @click="modal = false">Anuluj</div>
-      <div class="button" @click="generate">Dodaj</div>
+      <div class="ipsButton" @click="modal = false">Anuluj</div>
+      <div class="ipsButton" @click="generate">Dodaj</div>
     </div>
   </div>
 </template>

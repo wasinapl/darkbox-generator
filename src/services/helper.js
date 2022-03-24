@@ -2,13 +2,13 @@
 
 export default {
   addButtons(onClick) {
-    const codeElements = document.getElementsByTagName("code");
+    const codeElements = document.querySelectorAll(".ipsCode");
     let codeid = 0;
     for (let item of codeElements) {
       if (siteList.some((el) => item.innerHTML.includes(el))) {
         const button = document.createElement("div");
         button.innerText = "sprawdź linki i poproś o generację";
-        button.classList.add("button", "button--with-icon", "spo", "generuj");
+        button.classList.add("ipsButton", "generuj");
         button.dataset.codeid = codeid;
         button.addEventListener("click", onClick);
         item.appendChild(document.createElement("br"));
@@ -21,7 +21,7 @@ export default {
   getLinksInfo(e) {
     const codeid = e.target.dataset.codeid;
     let links = document
-      .getElementsByTagName("code")
+      .querySelectorAll(".ipsCode")
       [codeid].innerText.replaceAll("<br>", "\n")
       .split("\n");
     links = links.filter(
@@ -102,14 +102,14 @@ export default {
     }
     const postMessage = `[code]${link.href}[/code]`;
     const newWindow = window.open(
-      "https://darkbox.vip/posting.php?mode=post&f=30",
+      "https://darkbox.vip/forum/13-generowanie-link%C3%B3w/?do=add",
       "_blank"
     );
     newWindow.addEventListener(
       "load",
       () => {
-        newWindow.document.querySelector("#subject").value = postTitle;
-        newWindow.document.querySelector("#message").value = postMessage;
+        newWindow.document.querySelector("#elInput_topic_title").value = postTitle;
+        const content = newWindow.document.querySelector('#topic_content_editor > div > div > div > div:nth-child(1) > div.norewrite > textarea').innerText = postMessage;
       },
       true
     );

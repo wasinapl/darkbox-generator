@@ -1,8 +1,18 @@
 <template>
   <div class="modal" v-if="modal">
     <h2>Lista linków:</h2>
+    <div class="hosts" v-if="hosts.size > 1">
+      <div class="host" v-for="(host, i) in hosts" :key="i">
+        <input type="checkbox" :id="'host' + i" @input="updateHosts(host)" />
+        <label :for="'host' + i">{{ host }}</label>
+      </div>
+    </div>
     <div class="links">
-      <div class="link" v-for="(link, i) in link_list" :key="link.href">
+      <div class="link">
+        <input type="checkbox" id="all" v-model="selectAll" />
+        <label for="all">Zaznacz wszystkie</label>
+      </div>
+      <div class="link" v-for="(link, i) in filtered_links" :key="link.href">
         <input
           type="checkbox"
           :id="'link' + i"
@@ -27,20 +37,34 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import helper from "./../services/helper";
 
 export default {
   name: "GenModal",
   setup() {
     const modal = ref(false);
+    const selectAll = ref(false);
     const link_list = ref([]);
+    const filtered_hosts = ref(new Set());
+    const hosts = ref(new Set());
+
+    const filtered_links = computed(() => {
+      if (filtered_hosts.value.size < 1) return link_list.value;
+      else {
+        return link_list.value.filter((el) => {
+          return filtered_hosts.value.has(el.site);
+        });
+      }
+    });
 
     const onClick = (event) => {
       link_list.value = helper.getLinksInfo(event);
+      getHosts();
       modal.value = true;
       checkAll();
     };
+
     const getSize = async (index) => {
       const link = link_list.value[index];
       helper.getSize(link.href, (response) => {
@@ -55,12 +79,26 @@ export default {
     };
 
     const generate = () => {
-      for (let i = 0; i < link_list.value.length; i++) {
-        const link = link_list.value[i];
-        if (link.selected) {
+      for (let i = 0; i < filtered_links.value.length; i++) {
+        const link = filtered_links.value[i];
+        if (link.selected && !link.disabled) {
           helper.newWindow(link);
           link.disabled = true;
         }
+      }
+    };
+
+    const getHosts = () => {
+      link_list.value.forEach((link) => {
+        hosts.value.add(link.site);
+      });
+    };
+
+    const updateHosts = (host) => {
+      if (filtered_hosts.value.has(host)) {
+        filtered_hosts.value.delete(host);
+      } else {
+        filtered_hosts.value.add(host);
       }
     };
 
@@ -68,7 +106,23 @@ export default {
       helper.addButtons(onClick);
     });
 
-    return { modal, link_list, getSize, checkAll, generate };
+    watch(selectAll, (newVal) => {
+      for (let i = 0; i < link_list.value.length; i++) {
+        const link = link_list.value[i];
+        if (link.size && !link.disabled && link.size != 0)
+          link.selected = newVal;
+      }
+    });
+
+    return {
+      modal,
+      filtered_links,
+      hosts,
+      getSize,
+      selectAll,
+      generate,
+      updateHosts,
+    };
   },
 };
 </script>

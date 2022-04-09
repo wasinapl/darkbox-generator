@@ -102,7 +102,7 @@ export default {
     }
     const postMessage = `[code]${link.href}[/code]`;
     const newWindow = window.open(
-      "https://darkbox.vip/forum/13-generowanie-link%C3%B3w/?do=add",
+      "https://darkbox.vip/forum/13-generowanie-linków/?do=add",
       "_blank"
     );
     newWindow.addEventListener(

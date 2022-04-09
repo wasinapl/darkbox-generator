@@ -18,9 +18,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         );
       }
     });
-  } else if (request.fun == "getRequests") { 
-    chrome.storage.local.get(["requests"], function (items) {
-      sendResponse(items.requests || 0);
+  } else if (request.fun == "getRequests") {
+    chrome.storage.local.get(["requests", "date"], function (items) {
+      if (!items.date) {
+        chrome.storage.local.set(
+          { date: Date.now(), requests: 0 },
+          function () {}
+        );
+        sendResponse(0);
+      } else {
+        const same_day = sameDay(new Date(items.date), new Date());
+        if (!same_day) {
+          chrome.storage.local.set(
+            { date: Date.now(), requests: 0 },
+            function () {}
+          );
+          sendResponse(0);
+        } else {
+          sendResponse(items.requests);
+        }
+      }
     });
   }
   return true;
@@ -38,7 +55,9 @@ async function getResponse(href) {
 }
 
 function sameDay(d1, d2) {
-  return d1.getFullYear() === d2.getFullYear() &&
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
     d1.getMonth() === d2.getMonth() &&
-    d1.getDate() === d2.getDate();
+    d1.getDate() === d2.getDate()
+  );
 }

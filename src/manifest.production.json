@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Darkbox generator",
     "description": "Generator próśb o wygenerowanie linku",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "background": {
         "service_worker": "/js/background.js"
     },
@@ -19,6 +19,9 @@
             ]
         }
     ],
+    "permissions": [
+        "storage"
+      ],
     "host_permissions": [
         "*://*.wrzucajpliki.pl/*",
         "*://*.rapidgator.net/*",

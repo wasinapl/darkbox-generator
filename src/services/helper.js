@@ -108,12 +108,23 @@ export default {
     newWindow.addEventListener(
       "load",
       () => {
-        newWindow.document.querySelector("#elInput_topic_title").value = postTitle;
-        const content = newWindow.document.querySelector('#topic_content_editor > div > div > div > div:nth-child(1) > div.norewrite > textarea').innerText = postMessage;
+        newWindow.document.querySelector("#elInput_topic_title").value =
+          postTitle;
+        const content = (newWindow.document.querySelector(
+          "#topic_content_editor > div > div > div > div:nth-child(1) > div.norewrite > textarea"
+        ).innerText = postMessage);
       },
       true
     );
   },
+  updateRequests() {
+    chrome.runtime.sendMessage({ fun: "updateRequests"});
+  },
+  getRequests(response) {
+    chrome.runtime.sendMessage({ fun: "getRequests"}, res => {
+      response(res);
+    });
+  }
 };
 
 const siteList = [

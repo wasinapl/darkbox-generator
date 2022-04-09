@@ -1,5 +1,6 @@
 <template>
   <div class="modal" v-if="modal">
+    <div class="requests">Dzisiejsze prośby: {{ requests }}</div>
     <h2>Lista linków:</h2>
     <div class="hosts" v-if="hosts.size > 1">
       <div class="host" v-for="(host, i) in hosts" :key="i">
@@ -48,6 +49,7 @@ export default {
     const link_list = ref([]);
     const filtered_hosts = ref(new Set());
     const hosts = ref(new Set());
+    const requests = ref(null);
 
     const filtered_links = computed(() => {
       if (filtered_hosts.value.size < 1) return link_list.value;
@@ -61,6 +63,9 @@ export default {
     const onClick = (event) => {
       link_list.value = helper.getLinksInfo(event);
       getHosts();
+      helper.getRequests((res) => {
+        requests.value = res;
+      });
       modal.value = true;
       checkAll();
     };
@@ -104,6 +109,17 @@ export default {
 
     onMounted(() => {
       helper.addButtons(onClick);
+      if (
+        window.location.href ==
+        "https://darkbox.vip/forum/13-generowanie-link%C3%B3w/?do=add"
+      ) {
+        const selector =
+          "#ipsLayout_mainArea > form > div > div.ipsAreaBackground_reset.ipsPadding.ipsType_center.ipsBorder_top.ipsRadius\\:bl.ipsRadius\\:br > button";
+        const button = document.querySelector(selector);
+        button.addEventListener("click", () => {
+          helper.updateRequests();
+        });
+      }
     });
 
     watch(selectAll, (newVal) => {
@@ -118,6 +134,7 @@ export default {
       modal,
       filtered_links,
       hosts,
+      requests,
       getSize,
       selectAll,
       generate,

@@ -1,4 +1,5 @@
 <template>
+  <div class="modal-background" v-if="modal" @click="modal = false"></div>
   <div class="modal" v-if="modal">
     <div class="requests">Dzisiejsze prośby: {{ requests }}</div>
     <h2>Lista linków:</h2>

@@ -66,9 +66,9 @@ export default {
             response(0);
           }
         } else if (link.includes("wrzucajpliki")) {
-          selector = "span";
-          if (doc.querySelectorAll(selector)[16]) {
-            sizeStr = doc.querySelectorAll(selector)[16].innerText.slice(1, -1);
+          selector = "#container > div > font";
+          if (doc.querySelector(selector)) {
+            sizeStr = doc.querySelector(selector).innerText.match(/\(([^)]+)\)/)[1];
           } else {
             response(0);
           }

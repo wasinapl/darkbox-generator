@@ -16,6 +16,16 @@ export default {
       }
       codeid++;
     }
+
+    const menu = document.querySelector('#ipsLayout_header > header > div.focus-header-align > div > div > div > nav > div > ul');
+    const menu_item = document.createElement('li');
+    menu_item.style.cursor = 'pointer';
+    const menu_item_title = document.createElement('a');
+    menu_item_title.innerText = "Link checker";
+
+    menu_item.appendChild(menu_item_title);
+    menu.prepend(menu_item);
+
   },
 
   getLinksInfo(e) {

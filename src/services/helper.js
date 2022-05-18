@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 export default {
-  addButtons(onClick) {
+  addButtons(onClick, onClickLinkChecker) {
     const codeElements = document.querySelectorAll(".ipsCode");
     let codeid = 0;
     for (let item of codeElements) {
@@ -20,6 +20,7 @@ export default {
     const menu = document.querySelector('#ipsLayout_header > header > div.focus-header-align > div > div > div > nav > div > ul');
     const menu_item = document.createElement('li');
     menu_item.style.cursor = 'pointer';
+    menu_item.addEventListener('click', onClickLinkChecker);
     const menu_item_title = document.createElement('a');
     menu_item_title.innerText = "Link checker";
 

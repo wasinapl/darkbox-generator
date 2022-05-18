@@ -10,9 +10,9 @@
       </div>
     </div>
     <div class="link">
-        <input type="checkbox" id="all" v-model="selectAll" />
-        <label for="all">Zaznacz wszystkie</label>
-      </div>
+      <input type="checkbox" id="all" v-model="selectAll" />
+      <label for="all">Zaznacz wszystkie</label>
+    </div>
     <div class="links">
       <div class="link" v-for="(link, i) in filtered_links" :key="link.href">
         <input
@@ -36,14 +36,17 @@
       <div class="ipsButton" @click="generate">Dodaj</div>
     </div>
   </div>
+  <LinksInput v-if="links_input" @done="onLinksInput" />
 </template>
 
 <script>
 import { ref, onMounted, watch, computed } from "vue";
 import helper from "./../services/helper";
+import LinksInput from "./LinksInput.vue";
 
 export default {
   name: "GenModal",
+  components: { LinksInput },
   setup() {
     const modal = ref(false);
     const selectAll = ref(false);
@@ -51,6 +54,7 @@ export default {
     const filtered_hosts = ref(new Set());
     const hosts = ref(new Set());
     const requests = ref(null);
+    const links_input = ref(false);
 
     const filtered_links = computed(() => {
       if (filtered_hosts.value.size < 1) return link_list.value;
@@ -69,6 +73,11 @@ export default {
       });
       modal.value = true;
       checkAll();
+    };
+
+    const onClickLinkChecker = () => {
+      links_input.value = true;
+      console.log("test");
     };
 
     const getSize = async (index) => {
@@ -108,8 +117,16 @@ export default {
       }
     };
 
+    const onLinksInput = (res) => {
+      if (res) {
+        console.log(res);
+      } else {
+        links_input.value = false;
+      }
+    };
+
     onMounted(() => {
-      helper.addButtons(onClick);
+      helper.addButtons(onClick, onClickLinkChecker);
       if (
         window.location.href ==
         "https://darkbox.vip/forum/13-generowanie-link%C3%B3w/?do=add"
@@ -140,6 +157,8 @@ export default {
       selectAll,
       generate,
       updateHosts,
+      links_input,
+      onLinksInput,
     };
   },
 };

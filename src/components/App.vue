@@ -9,11 +9,11 @@
         <label :for="'host' + i">{{ host }}</label>
       </div>
     </div>
-    <div class="links">
-      <div class="link">
+    <div class="link">
         <input type="checkbox" id="all" v-model="selectAll" />
         <label for="all">Zaznacz wszystkie</label>
       </div>
+    <div class="links">
       <div class="link" v-for="(link, i) in filtered_links" :key="link.href">
         <input
           type="checkbox"
